@@ -38,6 +38,10 @@ function initMap() {
     {
       name: 'Location Two',
       position: { lat: 39.9619479, lng: -75.1831994 }
+    },
+    {
+      name: 'Location Three',
+      position: { lat: 39.9719479, lng: -75.2031994 }
     }
   ];
 
@@ -71,9 +75,11 @@ function initMap() {
   for (var i = 0; i < markers.length; i++) {
     var $el = $('<li data-id="' + i + '">' + markers[i].location.name + '</li>');
     var locationName = markers[i].location.name;
-    $el.click(function() {
-      markers[$(this).attr('data-id')].click();
-    }).bind(locationName);
+    $el.on('click', function() {
+      var marker = markers[$(this).attr('data-id')];
+      new google.maps.event.trigger(marker, 'click');
+      map.setCenter(marker.position);
+    });
     $listElement.append($el);
   }
 
