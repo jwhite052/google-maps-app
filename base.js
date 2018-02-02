@@ -20,11 +20,15 @@ function initMap() {
     '(last visited June 22, 2009).</p>'+
     '</div>'+
     '</div>';
-    
+
+  /* Map */
+
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 15,
     center: { lat: 39.954365, lng: -75.1608042 }
   });
+
+  /* Locations Data */
 
   var locations = [
     {
@@ -37,6 +41,8 @@ function initMap() {
     }
   ];
 
+  /* Markers */
+
   var markers = [];
 
   for (var i = 0; i < locations.length; i++) {
@@ -47,6 +53,8 @@ function initMap() {
     });
   }
 
+  /* Info Window */
+
   var infowindow = new google.maps.InfoWindow();
 
   for (var i = 0; i < markers.length; i++) {
@@ -56,5 +64,21 @@ function initMap() {
     });
   }
 
+  /* Locations List */
+
+  var $listElement = $('#locations-list');
+
+  for (var i = 0; i < markers.length; i++) {
+    var $el = $('<li data-id="' + i + '">' + markers[i].location.name + '</li>');
+    var locationName = markers[i].location.name;
+    $el.click(function() {
+      markers[$(this).attr('data-id')].click();
+    }).bind(locationName);
+    $listElement.append($el);
+  }
+
+  /* Event Handlers */
+
+  $listElement.child
 }
 google.maps.event.addDomListener(window, 'load', initMap);
