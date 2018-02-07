@@ -12,22 +12,31 @@
   src="http://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
+    <script src="list.min.js"></script>
   </head>
   <body>
-    <div class="container">
+    <div id="locationsApp" class="container">
       <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-12">
+
+          <div class="filters-bar">
+            <input class="search" />
+            <span class="sort" data-sort="name">Sort by name</span>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+
+          <ul id="locations-list" class="list"></ul>
+
+        </div>
+        <div class="col-md-4">
 
           <div class="map-container">
             <div id="map"></div>
           </div>
-
-        </div>
-        <div class="col-md-5">
-
-          <ul id="locations-list">
-
-          </ul>
 
         </div>
       </div>

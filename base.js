@@ -36,12 +36,16 @@ function initMap() {
       position: { lat: 39.954365, lng: -75.1608042 }
     },
     {
-      name: 'Location Two',
+      name: 'Location Four',
       position: { lat: 39.9619479, lng: -75.1831994 }
     },
     {
       name: 'Location Three',
       position: { lat: 39.9719479, lng: -75.2031994 }
+    },
+    {
+      name: 'Location Two',
+      position: { lat: 39.9819479, lng: -75.2131994 }
     }
   ];
 
@@ -53,7 +57,9 @@ function initMap() {
     markers[i] = new google.maps.Marker({
       position: locations[i].position,
       map: map,
-      location: locations[i]
+      /* custom */
+      location: locations[i],
+      id: i
     });
   }
 
@@ -61,6 +67,7 @@ function initMap() {
 
   var infowindow = new google.maps.InfoWindow();
 
+  /* when marker is clicked, trigger info window */
   for (var i = 0; i < markers.length; i++) {
     markers[i].addListener('click', function() {
       infowindow.setContent(this.location.name);
@@ -73,18 +80,43 @@ function initMap() {
   var $listElement = $('#locations-list');
 
   for (var i = 0; i < markers.length; i++) {
-    var $el = $('<li data-id="' + i + '">' + markers[i].location.name + '</li>');
-    var locationName = markers[i].location.name;
+
+    /* create locations list element, one for each marker */
+    var $el = $('<li data-id="' + i + '">' + '<h3 class="name">' + markers[i].location.name + '</li>');
+    $listElement.append($el);
+
+    /* Event Handlers */
+
+    /* when list item is clicked, trigger corresponding map marker */
     $el.on('click', function() {
       var marker = markers[$(this).attr('data-id')];
       new google.maps.event.trigger(marker, 'click');
-      map.setCenter(marker.position);
+      // map.setCenter(marker.position);
     });
-    $listElement.append($el);
+
+    /* when map marker is clicked, trigger corresponding list item */
+    markers[i].addListener('click', function() {
+      $('li[data-id="' + this.id + '"]').css('color', 'red');
+      console.log('li[data-id="' + this.id + '"]');
+    });
   }
 
-  /* Event Handlers */
+  /* List.js */
+  var locationsList = new List('locationsApp', { valueNames: [ 'name' ]});
 
-  $listElement.child
+  /* List Listener */
+  locationsList.on('updated', function() {
+    updateMarkers();
+  });
+
+  function updateMarkers() {
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(null);
+    }
+    $('#locations-list li').each(function() {
+      markers[$(this).attr('data-id')].setMap(map);
+    });
+  }
+
 }
 google.maps.event.addDomListener(window, 'load', initMap);
