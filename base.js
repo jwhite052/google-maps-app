@@ -43,6 +43,11 @@ function initMap() {
     }
   ];
 
+  // set id for each location
+  for (var i = 0; i < locations.length; i++) {
+    locations[i].id = i;
+  }
+
   /* Markers */
 
   var markers = [];
@@ -115,7 +120,8 @@ function initMap() {
     });
   }
 
-  function calculateDistance(origin, destination) {
+  function calculateDistance(origin, location) {
+    var destination = location.address;
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(
     {
@@ -126,25 +132,28 @@ function initMap() {
       avoidHighways: false,
       avoidTolls: false
     }, calculateDistanceCallback);
-  }
 
-  function calculateDistanceCallback(response, status) {
-    if (status != google.maps.DistanceMatrixStatus.OK) {
-      console.log(err);
-    } else {
-      var origin = response.originAddresses[0];
-      var destination = response.destinationAddresses[0];
-      if (response.rows[0].elements[0].status === "ZERO_RESULTS" ||
-          response.rows[0].elements[0].status === "NOT_FOUND") {
-        console.log("Better get on a plane. There are no roads between "
-                          + origin + " and " + destination);
+    function calculateDistanceCallback(response, status) {
+      if (status != google.maps.DistanceMatrixStatus.OK) {
+        console.log(err);
       } else {
-        var distance = response.rows[0].elements[0].distance;
-        var distance_value = distance.value;
-        var distance_text = distance.text;
-        var miles = distance_text.substring(0, distance_text.length - 3);
-        console.log("Distance value is " + distance.value);
-        console.log("Distance text is " + distance.text);
+        var origin = response.originAddresses[0];
+        var destination = response.destinationAddresses[0];
+        if (response.rows[0].elements[0].status === "ZERO_RESULTS" ||
+            response.rows[0].elements[0].status === "NOT_FOUND") {
+          console.log("Better get on a plane. There are no roads between "
+                            + origin + " and " + destination);
+        } else {
+          var distance = response.rows[0].elements[0].distance;
+          var distance_value = distance.value;
+          var distance_text = distance.text;
+          var miles = distance_text.substring(0, distance_text.length - 3);
+          console.log("Distance value is " + distance.value);
+          console.log("Distance text is " + distance.text);
+          location.distance = distance.value;
+          console.log("locations distance " + location.distance);
+          $('li[data-id="' + location.id + '"]').append("Distance: " + location.distance);
+        }
       }
     }
   }
@@ -157,7 +166,7 @@ function initMap() {
     if (origin === undefined) { origin = ""; }
     for (var i = 0; i < locations.length; i++) {
       filteredList.push(locations[i]);
-      calculateDistance(origin, locations[i].address);
+      calculateDistance(origin, locations[i]);
     }
   });
 }
