@@ -33,18 +33,12 @@ function initMap() {
   var locations = [
     {
       name: 'Location One',
+      address: '2918 Poplar Street #3 Philadelphia, PA 19130',
       position: { lat: 39.954365, lng: -75.1608042 }
     },
     {
-      name: 'Location Four',
-      position: { lat: 39.9619479, lng: -75.1831994 }
-    },
-    {
-      name: 'Location Three',
-      position: { lat: 39.9719479, lng: -75.2031994 }
-    },
-    {
       name: 'Location Two',
+      address: '833 Chestnut Street Philadelphia, PA 19107',
       position: { lat: 39.9819479, lng: -75.2131994 }
     }
   ];
@@ -82,7 +76,10 @@ function initMap() {
   for (var i = 0; i < markers.length; i++) {
 
     /* create locations list element, one for each marker */
-    var $el = $('<li data-id="' + i + '">' + '<h3 class="name">' + markers[i].location.name + '</li>');
+    var $el = $('<li data-id="' + i + '">' +
+    '<h3 class="name">' + markers[i].location.name + '</h3>' +
+    '<p>' + markers[i].location.address + '</p>' +
+    '</li>');
     $listElement.append($el);
 
     /* Event Handlers */
@@ -118,5 +115,50 @@ function initMap() {
     });
   }
 
+  function calculateDistance(origin, destination) {
+    var service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+    {
+      origins: [origin],
+      destinations: [destination],
+      travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.IMPERIAL,
+      avoidHighways: false,
+      avoidTolls: false
+    }, calculateDistanceCallback);
+  }
+
+  function calculateDistanceCallback(response, status) {
+    if (status != google.maps.DistanceMatrixStatus.OK) {
+      console.log(err);
+    } else {
+      var origin = response.originAddresses[0];
+      var destination = response.destinationAddresses[0];
+      if (response.rows[0].elements[0].status === "ZERO_RESULTS" ||
+          response.rows[0].elements[0].status === "NOT_FOUND") {
+        console.log("Better get on a plane. There are no roads between "
+                          + origin + " and " + destination);
+      } else {
+        var distance = response.rows[0].elements[0].distance;
+        var distance_value = distance.value;
+        var distance_text = distance.text;
+        var miles = distance_text.substring(0, distance_text.length - 3);
+        console.log("Distance value is " + distance.value);
+        console.log("Distance text is " + distance.text);
+      }
+    }
+  }
+
+  $('#filterForm .submit').on('click', function(e) {
+    e.preventDefault();
+    var filteredList = [];
+    console.log("Submit");
+    var origin = $('#filterForm input.address').val();
+    if (origin === undefined) { origin = ""; }
+    for (var i = 0; i < locations.length; i++) {
+      filteredList.push(locations[i]);
+      calculateDistance(origin, locations[i].address);
+    }
+  });
 }
 google.maps.event.addDomListener(window, 'load', initMap);
