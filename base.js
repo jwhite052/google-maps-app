@@ -84,6 +84,7 @@ function initMap() {
     var $el = $('<li data-id="' + i + '">' +
     '<h3 class="name">' + markers[i].location.name + '</h3>' +
     '<p>' + markers[i].location.address + '</p>' +
+    '<p class="distance"></p>' +
     '</li>');
     $listElement.append($el);
 
@@ -116,7 +117,9 @@ function initMap() {
       markers[i].setMap(null);
     }
     $('#locations-list li').each(function() {
-      markers[$(this).attr('data-id')].setMap(map);
+      if ($(this).is(':visible')) {
+        markers[$(this).attr('data-id')].setMap(map);
+      }
     });
   }
 
@@ -138,23 +141,40 @@ function initMap() {
         console.log(err);
       } else {
         var origin = response.originAddresses[0];
+        console.log("Response:", response);
         var destination = response.destinationAddresses[0];
         if (response.rows[0].elements[0].status === "ZERO_RESULTS" ||
             response.rows[0].elements[0].status === "NOT_FOUND") {
           console.log("Better get on a plane. There are no roads between "
                             + origin + " and " + destination);
         } else {
+          console.log(response.rows[0].elements[0]);
           var distance = response.rows[0].elements[0].distance;
           var distance_value = distance.value;
           var distance_text = distance.text;
           var miles = distance_text.substring(0, distance_text.length - 3);
           console.log("Distance value is " + distance.value);
           console.log("Distance text is " + distance.text);
-          location.distance = distance.value;
+          location.distance = distance.value / 5280;
           console.log("locations distance " + location.distance);
-          $('li[data-id="' + location.id + '"]').append("Distance: " + location.distance);
+          $('li[data-id="' + location.id + '"]').attr("data-distance", location.distance);
+          updateList();
+          updateMarkers();
         }
       }
+    }
+
+    function updateList() {
+      var $list = $('#locations-list li');
+      var radius = $('#filterForm select option:selected').val();
+      $list.each(function(index) {
+        var $this = $(this);
+        if (parseFloat($this.attr("data-distance")) > radius) {
+          $this.hide();
+        } else {
+          $this.show();
+        }
+      });
     }
   }
 
@@ -168,6 +188,20 @@ function initMap() {
       filteredList.push(locations[i]);
       calculateDistance(origin, locations[i]);
     }
+    centerMap(origin);
   });
+
+  function centerMap(address) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode( { "address": address }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
+            var location = results[0].geometry.location,
+                lat      = location.lat(),
+                lng      = location.lng();
+          map.setCenter(location);
+          map.setZoom(12);
+        }
+    });
+  }
 }
 google.maps.event.addDomListener(window, 'load', initMap);
