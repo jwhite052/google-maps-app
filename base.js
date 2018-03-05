@@ -137,6 +137,7 @@ function initMap() {
     markers[i] = new google.maps.Marker({
       position: locations[i].position,
       map: map,
+      icon: '/content/dam/jefferson-health/blue-marker-icon.png',
       /* custom */
       location: locations[i],
       id: i
@@ -144,7 +145,8 @@ function initMap() {
   }
 
   var locationMarker = new google.maps.Marker({
-    map: map
+    map: map,
+    icon: '/content/dam/jefferson-health/orange-marker-icon.png',
   });
 
   /* Info Window */
@@ -155,13 +157,21 @@ function initMap() {
   for (var i = 0; i < markers.length; i++) {
     markers[i].addListener('click', function() {
       var location = locations[this.id];
+      var directionsUrl = 'https://www.google.com/maps/place/' + location.address;
+      directionsUrl = directionsUrl.replace(/<br>/g,' ');
+      var locationHours = "";
+      if (location.hours !== undefined && location.hours !== null) {
+        locationHours = '<div class="hours">' + location.hours + '</div>';
+      }
       var contentString =
           '<div id="infoWindowContent">' +
           '<div class="name">' + location.name + '</div>'+
           '<div class="address">' + location.address + '</div>' +
+          '<div class="phone">' + location.phone + '</div>' +
+          locationHours +
           '<div class="links">' +
-          '<a href="' + location.url + '">Locations Page</a>' + '<span> | </span>' +
-          '<a href="' + 'https://www.google.com/maps/place/' + location.address + '" target="blank">Directions</a>' +
+          '<a href="' + location.url + '" target="blank">Locations Page</a>' + '<span> | </span>' +
+          '<a href="' + directionsUrl + '" target="blank">Directions</a>' +
           '</div>';
       infowindow.setContent(contentString);
       infowindow.open(map, this);
@@ -174,14 +184,22 @@ function initMap() {
 
   for (var i = 0; i < markers.length; i++) {
 
+    var directionsUrl = 'https://www.google.com/maps/place/' + markers[i].location.address;
+    directionsUrl = directionsUrl.replace(/<br>/g,' ');
+    var locationHours = "";
+    if (markers[i].location.hours !== undefined && markers[i].location.hours !== null) {
+      locationHours = '<div class="hours">' + markers[i].location.hours + '</div>';
+    }
     /* create locations list element, one for each marker */
     var $el = $('<li data-id="' + i + '">' +
     '<div class="name">' + markers[i].location.name + '</div>' +
     '<div class="address">' + markers[i].location.address + '</div>' +
     '<div class="distance"></div>' +
+    '<div class="phone">' + markers[i].location.phone + '</div>' +
+    locationHours +
     '<div class="links">' +
-    '<a href="' + location.url + '">Locations Page</a>' + '<span> | </span>' +
-    '<a href="' + 'https://www.google.com/maps/place/' + location.address + '" target="blank">Directions</a>' +
+    '<a href="' + markers[i].location.url + '" target="blank">Locations Page</a>' + '<span> | </span>' +
+    '<a href="' + directionsUrl + '" target="blank">Directions</a>' +
     '</div>' +
     '</li>');
     $listElement.append($el);
@@ -203,8 +221,6 @@ function initMap() {
       $("body, html").animate({
           scrollTop: $($listEl).offset().top
       }, 600);
-
-      console.log('li[data-id="' + this.id + '"]');
     });
   }
 
@@ -250,22 +266,15 @@ function initMap() {
         console.log(err);
       } else {
         var origin = response.originAddresses[0];
-        console.log("Response:", response);
         var destination = response.destinationAddresses[0];
         if (response.rows[0].elements[0].status === "ZERO_RESULTS" ||
             response.rows[0].elements[0].status === "NOT_FOUND") {
-          console.log("Better get on a plane. There are no roads between "
-                            + origin + " and " + destination);
         } else {
-          console.log(response.rows[0].elements[0]);
           var distance = response.rows[0].elements[0].distance;
           var distance_value = distance.value;
           var distance_text = distance.text;
           var miles = distance_text.substring(0, distance_text.length - 3);
-          console.log("Distance value is " + distance.value);
-          console.log("Distance text is " + distance.text);
           location.distance = parseFloat(distance.value / 5280).toFixed(2);
-          console.log("locations distance " + location.distance);
           $('li[data-id="' + location.id + '"]').attr("data-distance", location.distance);
           $('li[data-id="' + location.id + '"]').find(".distance").html("Distance: " + location.distance + " mi");
           updateList();
@@ -291,7 +300,6 @@ function initMap() {
   $('#filterForm .submit').on('click', function(e) {
     e.preventDefault();
     var filteredList = [];
-    console.log("Submit");
     var origin = $('#filterForm input.address').val();
     if (origin === undefined) { origin = ""; }
     for (var i = 0; i < locations.length; i++) {
@@ -302,9 +310,9 @@ function initMap() {
     locationsList.search($('.search-input').val());
     updateMarkers();
     if ($('#locations-list li:visible') !== null) {
-      $('.list-message').hide()
+      $('.list-message').hide();
     } else {
-      $('.list-message').show()
+      $('.list-message').show();
     }
   });
 

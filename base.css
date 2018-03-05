@@ -1,9 +1,6 @@
 body {
   font-family: 'Lato' !important;
 }
-
-html,
-body,
 #map {
   height: 100%;
   width: 100%;
@@ -36,9 +33,18 @@ body,
   font-size: 16px;
   font-weight: bold;
   margin: 15px 0 10px 0;
+  color: #152456;
 }
 #infoWindowContent .address {
   font-size: 14px;
+  margin-bottom: 10px;
+}
+#infoWindowContent .phone {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+#infoWindowContent .hours {
+  font-size: 12px;
   margin-bottom: 10px;
 }
 #infoWindowContent .links a {
@@ -76,20 +82,31 @@ body,
   position: relative;
   box-sizing: border-box;
   border-bottom: 2px solid #f2f4f8;
-  padding: 20px;
+  padding: 20px 0;
   cursor: pointer;
+  transition: ease-in .2s;
 }
 #locations-list li:hover {
   background-color: #f2f4f8;
+  padding: 20px;
 }
 #locations-list .name {
   font-size: 21px;
   font-weight: bold;
   margin-bottom: 15px;
   width: calc(100% - 100px);
+  color: #152456;
 }
 #locations-list .address {
-  font-size: 18px;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+#locations-list .phone {
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+#locations-list .hours {
+  font-size: 14px;
   margin-bottom: 15px;
 }
 #locations-list .links a {

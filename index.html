@@ -17,7 +17,7 @@
     <script src="list.min.js"></script>
   </head>
   <body>
-    <div id="locationsApp" class="container">
+    <div id="locationsApp">
       <div class="row">
         <div class="col-md-12">
 
@@ -26,47 +26,53 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-8">
 
           <div class="list-message">No results. Update your search terms and try again.</div>
           <ul id="locations-list" class="list"></ul>
 
         </div>
-        <div class="col-md-5 sticky-col">
+        <div class="col-md-4 sticky-col">
 
-          <div class="filters-bar">
+          <div class="filters-bar" style="padding: 20px">
             <form id="filterForm">
-              <div class="col-md-5">
+              <div style="margin-bottom: 10px; margin-right: 15px;">
+
+                            <label class="label-search" style="font-size: 12px;">Location Name</label>
+                                          <input style="width: 100%; height: 30px;" class="search-input" />
+                                          </div>
+<div style="float: left; margin-right: 15px;">
 
 
-              <label class="label-zip">ZIP Code</label>
-              <input class="address" type="text" pattern="[0-9]{5}" title="Five digit zip code" />
+              <label class="label-zip" style="font-size: 12px;">ZIP Code</label>
+              <input style="width:100px; height: 30px;" class="address" type="text" pattern="[0-9]{5}" title="Five digit zip code" />
 </div>
-<div class="col-md-7">
-              <label class="label-radius">Radius</label>
-              <select>
+<div style="float: left; margin-right: 15px;">
+              <label class="label-radius" style="font-size: 12px;">Radius</label>
+              <select style="height: 30px;">
                 <option value="1">1</option>
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="25" selected>25</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
-                <option value="2000">All</option>
+                <option value="5000">None</option>
               </select>
+</div>
+
+
+<div style="float: left; padding-top: 15px;">
+
+
+              <button class="submit" style="background-color: #666; color: #fff; border: 0; padding: 5px 10px; font-size: 14px;">Search Locations</button>
               </div>
-              <div class="col-md-12">
-
-              <label class="label-search">Search by location name or address</label>
-                            <input class="search-input" />
-                            </div>
-<div class="col-md-12">
-
-
-              <button class="submit">Submit</button>
-              </div>
-
+<div style="clear: both;"></div>
             </form>
-            <span class="sort" data-sort="name">Sort by name</span>
+            <div style="margin-top: 20px;">
+
+
+            <span class="sort" data-sort="name" style="display: inline-block; border: 2px solid #fff; padding: 5px; cursor: pointer; text-transform: uppercase; font-weight: bold; font-size: 12px;">Sort by name</span>
+            </div>
           </div>
 
           <div class="map-container">
