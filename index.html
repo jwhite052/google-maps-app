@@ -26,38 +26,45 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
 
-          <div class="list-message">No Results.</div>
+          <div class="list-message">No results. Update your search terms and try again.</div>
           <ul id="locations-list" class="list"></ul>
 
         </div>
-        <div class="col-md-4 sticky-col">
+        <div class="col-md-5 sticky-col">
 
           <div class="filters-bar">
             <form id="filterForm">
-              <div class="col-md-2">
+              <div class="col-md-5">
 
 
               <label class="label-zip">ZIP Code</label>
               <input class="address" type="text" pattern="[0-9]{5}" title="Five digit zip code" />
 </div>
-<div class="col-md-1">
+<div class="col-md-7">
               <label class="label-radius">Radius</label>
               <select>
                 <option value="1">1</option>
                 <option value="5">5</option>
                 <option value="10">10</option>
-                <option value="25">25</option>
+                <option value="25" selected>25</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
                 <option value="2000">All</option>
               </select>
               </div>
+              <div class="col-md-12">
+
+              <label class="label-search">Search by location name or address</label>
+                            <input class="search-input" />
+                            </div>
+<div class="col-md-12">
+
 
               <button class="submit">Submit</button>
-              <br />
-              <input class="search" />
+              </div>
+
             </form>
             <span class="sort" data-sort="name">Sort by name</span>
           </div>

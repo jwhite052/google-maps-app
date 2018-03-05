@@ -213,12 +213,12 @@ function initMap() {
 
   /* List Listener */
   locationsList.on('updated', function() {
-    updateMarkers();
-    if (locationsList.matchingItems.length == locationsList.items.length) {
-      $('.list-message').hide()
-    } else {
-      $('.list-message').show()
-    }
+    // updateMarkers();
+    // if ($('.locations-list li:visible')) {
+    //   $('.list-message').hide()
+    // } else {
+    //   $('.list-message').show()
+    // }
   });
 
   function updateMarkers() {
@@ -299,6 +299,13 @@ function initMap() {
       calculateDistance(origin, locations[i]);
     }
     centerMap(origin);
+    locationsList.search($('.search-input').val());
+    updateMarkers();
+    if ($('#locations-list li:visible') !== null) {
+      $('.list-message').hide()
+    } else {
+      $('.list-message').show()
+    }
   });
 
   function centerMap(address) {
