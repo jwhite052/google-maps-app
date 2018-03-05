@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Google Maps App</title>
 
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i" rel="stylesheet">
+
     <!-- CSS -->
     <link href="base.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
@@ -19,31 +21,46 @@
       <div class="row">
         <div class="col-md-12">
 
-          <div class="filters-bar">
-            <form id="filterForm">
-              <label>ZIP Code</label><input class="address" type="text" pattern="[0-9]{5}" title="Five digit zip code" />
-              <select>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-              </select>
-              <button class="submit">Submit</button>
-              <br />
-              <input class="search" />
-            </form>
-            <span class="sort" data-sort="name">Sort by name</span>
-          </div>
+
 
         </div>
       </div>
       <div class="row">
         <div class="col-md-8">
 
+          <div class="list-message">No Results.</div>
           <ul id="locations-list" class="list"></ul>
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 sticky-col">
+
+          <div class="filters-bar">
+            <form id="filterForm">
+              <div class="col-md-2">
+
+
+              <label class="label-zip">ZIP Code</label>
+              <input class="address" type="text" pattern="[0-9]{5}" title="Five digit zip code" />
+</div>
+<div class="col-md-1">
+              <label class="label-radius">Radius</label>
+              <select>
+                <option value="1">1</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="2000">All</option>
+              </select>
+              </div>
+
+              <button class="submit">Submit</button>
+              <br />
+              <input class="search" />
+            </form>
+            <span class="sort" data-sort="name">Sort by name</span>
+          </div>
 
           <div class="map-container">
             <div id="map"></div>

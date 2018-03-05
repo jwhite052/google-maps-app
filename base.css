@@ -1,3 +1,7 @@
+body {
+  font-family: 'Lato' !important;
+}
+
 html,
 body,
 #map {
@@ -6,15 +10,119 @@ body,
   margin: 0px;
   padding: 0px
 }
+.sticky-col {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0;
+  padding-top: 30px;
+}
 .map-container {
   width: 100%;
   height: 400px;
   margin: 0 auto;
 }
-#locationsApp .filters-bar {
-  background-color: #ccc;
-  padding: 10px 0;
-}
+
 #locationsApp .list {
 
+}
+
+
+/* Info Window */
+
+#infoWindowContent {
+  width: 240px;
+}
+#infoWindowContent .name {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 15px 0 10px 0;
+}
+#infoWindowContent .address {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+#infoWindowContent .links a {
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: inline-block;
+  letter-spacing: .07em;
+}
+#infoWindowContent .links span {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+/* Filters Bar */
+
+#locationsApp .filters-bar {
+  background-color: #f2f4f8;
+  padding: 20px 0;
+  background-color:
+}
+#filterForm label {
+  margin: 0;
+  display: block;
+}
+
+/* Locations Listing */
+
+#locations-list {
+  list-style-type: none;
+  margin: 30px 0 0 0;
+  padding: 0;
+}
+#locations-list li {
+  position: relative;
+  box-sizing: border-box;
+  border-bottom: 2px solid #f2f4f8;
+  padding: 20px;
+  cursor: pointer;
+}
+#locations-list li:hover {
+  background-color: #f2f4f8;
+}
+#locations-list .name {
+  font-size: 21px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  width: calc(100% - 100px);
+}
+#locations-list .address {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+#locations-list .links a {
+  font-size: 14px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+#locations-list .links span {
+  display: inline-block;
+  margin: 0 10px;
+}
+#locations-list .distance {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-weight: bold;
+  font-size: 12px;
+}
+@media (max-width: 600px) {
+  #locations-list .name {
+    width: 100%;
+  }
+  #locations-list .distance {
+    position: relative;
+    top: -10px;
+    right: auto;
+  }
+}
+
+.list-message {
+  display: none;
+  padding: 20px;
+  font-weight: bold;
 }
